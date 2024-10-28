@@ -3,7 +3,6 @@
 add_library(raymath 
   ${CMAKE_CURRENT_SOURCE_DIR}/Color.cpp
         Ray.h
-        Vector.h
-        hittable.h
-        rayobject/sphere.cpp
+        Vector3.cpp
+        Hittable.h
 )
