@@ -1,4 +1,4 @@
-# GoofyCast
+# GoofyRay
 
 A simple raycaster written in C++.
 
