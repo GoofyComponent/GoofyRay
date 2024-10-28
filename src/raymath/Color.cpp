@@ -3,12 +3,12 @@
 
 
 Color:: Color() : r(0), b(0), g(0)
-{
+{  
 }
 
 
 Color:: Color(float iR, float iG, float iB) : r(iR), g(iG), b(iB)
-{
+{  
 }
 
 Color::~ Color()
@@ -45,6 +45,6 @@ Color& Color::operator=(Color const& col) {
   return *this;
 }
 
-std::ostream & operator<<(std::ostream & _stream, Color const & col) {
+std::ostream & operator<<(std::ostream & _stream, Color const & col) {  
   return _stream << "(" << col.r << "," << col.g << "," << col.b << ")";
 }
