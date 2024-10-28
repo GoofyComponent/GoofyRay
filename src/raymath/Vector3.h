@@ -1,42 +1,29 @@
-// Created by dev-tgamiette on 28/10/2024.
-
-#ifndef VECTOR3_HPP
-#define VECTOR3_HPP
-
+#pragma once
+#include <cmath>
 #include <ostream>
 
 class Vector3 {
-private:
-    float x;
-    float y;
-    float z;
-
 public:
-    // Constructeur avec paramètres pour initialiser le vecteur
-    Vector3(float x, float y, float z);
+    float x, y, z;
 
-    // Destructeur
-    ~Vector3();
+    // Constructor to initialize the vector
+    Vector3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
-    // Accesseurs pour les composantes du vecteur
-    float X() const { return x; }
-    float Y() const { return y; }
-    float Z() const { return z; }
-
-    // Opérateurs de surcharge pour les opérations de vecteur
+    // Overloaded operators for vector operations
     Vector3 operator+(const Vector3& other) const;
     Vector3 operator-(const Vector3& other) const;
     Vector3 operator*(const double scalar) const;
     Vector3 operator/(const double scalar) const;
 
-    // Méthodes pour obtenir la longueur du vecteur
+    // Methods to get the length of the vector
     double length() const;
     double length_squared() const;
+
+    // Method to get a normalized vector (unit vector)
+    Vector3 normalized() const;
 };
 
-// Surcharge de l'opérateur de flux pour afficher le vecteur
+// Overloading the stream operator to display the vector
 inline std::ostream& operator<<(std::ostream& out, const Vector3& v) {
-    return out << v.X() << ' ' << v.Y() << ' ' << v.Z();
+    return out << v.x << ' ' << v.y << ' ' << v.z;
 }
-
-#endif // VECTOR3_HPP
