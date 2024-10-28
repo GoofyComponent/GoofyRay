@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "../raymath/Color.hpp"
+#include <vector>
 
 /** 
  * @class Image
