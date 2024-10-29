@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "../raymath/Color.hpp"
+#include "../shapes/Sphere.hpp"
 #include <vector>
 
 /** 
@@ -48,6 +49,9 @@ public:
    * @return Color : color of the pixel
    **/
   Color GetPixel(unsigned int x, unsigned int y);
+
+
+  void DrawSphere(Sphere sphere);
 
   /** 
    * @brief Write the image to a file

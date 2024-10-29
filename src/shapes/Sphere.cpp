@@ -67,7 +67,7 @@ std::optional<std::vector<Vector3>> Sphere::intersects(const Ray &iRay) const
 
     // No intersection if the distance from between P and C
     // is greater than the radius of our sphere!
-    if (distance < radius)
+    if (distance > radius)
     {
         return std::nullopt;
     }
