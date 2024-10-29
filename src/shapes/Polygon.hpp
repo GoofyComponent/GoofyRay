@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Color.hpp"
-#include "Vector3.h"
-#include "Ray.hpp"
+#include "../raymath/Color.hpp"
+#include "../raymath/Vector3.h"
+#include "../raymath/Ray.hpp"
 #include "Hittable.hpp"
 #include <vector>
 #include <iostream>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Color.hpp"
-#include "Ray.hpp"
+#include "../raymath/Color.hpp"
+#include "../raymath/Ray.hpp"
 #include "Hittable.hpp"
 #include <iostream>
 

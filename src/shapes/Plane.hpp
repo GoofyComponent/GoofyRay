@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector3.h"
-#include "Ray.hpp"
+#include "../raymath/Vector3.h"
+#include "../raymath/Ray.hpp"
 #include "Hittable.hpp"
 
 /**

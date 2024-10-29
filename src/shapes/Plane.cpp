@@ -43,9 +43,9 @@ std::optional<std::vector<Vector3>> Plane::intersects(const Ray &ray) const
     Vector3 diff = normal - ray.Origin();
     float num = diff * normal;
 
-    float t = num / denom;
+    float t2 = num / denom;
 
-    Vector3 p = ray.Origin() + ray.Direction() * t;
+    Vector3 p = ray.Origin() + ray.Direction() * t2;
 
     std::vector<Vector3> intersectionPoints;
     intersectionPoints.push_back(p);
