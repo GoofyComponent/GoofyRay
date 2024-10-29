@@ -1,41 +1,34 @@
-#include <iostream>
-#include "Vector3.h"
+#include "Camera.hpp"
 #include "Ray.hpp"
+#include <iostream>
 
 int main() {
-    Vector3 position, depthEnd;
-    int width;
-    int height;
+    // Define the camera origin and direction
+    Vector3 origin(0.0f, 0.0f, 0.0f);
+    Vector3 direction(0.0f, 0.0f, -1.0f);
 
-    std::cout << "Enter position (x y z): ";
-    std::cin >> position.x >> position.y >> position.z;
+    // Define the camera width and aspect ratio
+    float width = 1080.0f;
+    float aspect_ratio = 16.0f / 9.0f;
 
-    std::cout << "Enter depth end (x y z): ";
-    std::cin >> depthEnd.x >> depthEnd.y >> depthEnd.z;
+    // Instantiate the camera
+    Camera camera(origin, direction, width, aspect_ratio);
 
-    std::cout << "Enter width: ";
-    std::cin >> width;
+    // Get the view grid
+    int resolution_x = 1080;
+    int resolution_y = 720;
+    std::vector<std::vector<Ray>> viewGrid = camera.getViewGrid(resolution_x, resolution_y);
 
-    std::cout << "Enter height: ";
-    std::cin >> height;
-
-    auto const vector1 = Vector3(0, 0, 0);     // Origin of the ray
-    auto const vector2 = Vector3(1, 1, 0);     // Direction of the ray
-
-    std::cout << "Vector1 (Origin): " << vector1 << std::endl;
-    std::cout << "Vector2 (Direction): " << vector2 << std::endl;
-
-    Ray const ray = Ray(vector1, vector2);
-
-    std::cout << "Ray origin: " << ray.Origin() << std::endl;
-    std::cout << "Ray direction (normalized): " << ray.Direction() << std::endl;
-    std::cout << "Ray at distance 10: " << ray.At(10) << std::endl; // point at 10 units from origin along direction
-
-    // Output the user inputs
-    std::cout << "Position: " << position << std::endl;
-    std::cout << "Depth End: " << depthEnd << std::endl;
-    std::cout << "width: " << width << std::endl;
-    std::cout << "Height: " << height << std::endl;
+    // Print the rays
+    for (int y = 0; y < std::min(3, resolution_y); ++y) {
+        for (int x = 0; x < std::min(3, resolution_x); ++x) {
+            const Ray& ray = viewGrid[y][x];
+            std::cout << "Ray [" << y << "][" << x << "] - Origin: ("
+                      << ray.Origin().x << ", " << ray.Origin().y << ", " << ray.Origin().z << ") "
+                      << "Direction: (" << ray.Direction().x << ", " << ray.Direction().y << ", " << ray.Direction().z << ")"
+                      << std::endl;
+        }
+    }
 
     return 0;
 }
