@@ -39,23 +39,15 @@ Color Image::GetPixel(unsigned int x, unsigned int y) {
   return buffer[index];
 }
 
-
-void Image::DrawSphere(Sphere sphere) {
-  for (int y = 0; y < height; ++y) {
-    for (int x = 0; x < width; ++x) {
-      Ray ray = Ray(Vector3(x, y, 0), Vector3(0, 0, -1));
-      std::optional<std::vector<Vector3>> intersection = sphere.intersects(ray);
-      if (intersection.has_value()) {
-      // print the intersection point and the color of the sphere
-        std::cout << "Intersection point: " << intersection.value()[0] << std::endl;
-        std::cout << "Color of the sphere: " << sphere.getColor() << std::endl;
-        SetPixel(x, y, sphere.getColor());
-      }
-    }
-  }
+unsigned int Image::getWidth() const {
+  return width;
 }
 
-void Image::WriteFile(const char * filename) {
+unsigned int Image::getHeight() const {
+  return height;
+}
+
+void Image::WriteFile(const char * filename) const {
   std::vector<unsigned char> image;
   image.resize(width * height * 4);
   for(unsigned index = 0; index < buffer.size(); index++) {

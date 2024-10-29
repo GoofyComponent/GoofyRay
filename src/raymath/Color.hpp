@@ -68,6 +68,10 @@ public:
    */
   Color& operator=(Color const& col);
 
+
+  Color operator*(float scalar) const;  // Surcharge pour multiplication par un float
+  Color operator+(const Color& other) const;
+
   /**
    * @brief Overriding the output stream operator.
    * 

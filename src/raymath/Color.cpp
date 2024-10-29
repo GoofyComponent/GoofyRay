@@ -38,6 +38,10 @@ Color Color::operator+(Color const& col) {
   return c;
 }
 
+Color Color::operator*(float scalar) const {
+    return Color(std::clamp(r * scalar, 0.0f, 1.0f), std::clamp(g * scalar, 0.0f, 1.0f), std::clamp(b * scalar, 0.0f, 1.0f));
+}
+
 Color& Color::operator=(Color const& col) {
   r = col.r;
   g = col.g;

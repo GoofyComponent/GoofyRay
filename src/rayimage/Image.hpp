@@ -51,11 +51,12 @@ public:
   Color GetPixel(unsigned int x, unsigned int y);
 
 
-  void DrawSphere(Sphere sphere);
+  unsigned int getWidth() const;
+  unsigned int getHeight() const;
 
   /** 
    * @brief Write the image to a file
    * @param filename : name of the file
    **/
-  void WriteFile(const char* filename);
+  void WriteFile(const char* filename) const;
 };
