@@ -19,6 +19,8 @@ public:
 
     Vector3 operator*(double scalar) const;
 
+    Vector3 operator*(float scalar) const;
+
     float operator*(const Vector3 &other) const;
 
     Vector3 operator/(double scalar) const;

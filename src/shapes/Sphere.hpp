@@ -12,25 +12,18 @@
 class Sphere : public Hittable
 {
 private:
-    float x, y, z;
+    Vector3 origin;
     float radius;
     Color color;
 
 public:
     /**
-     * @brief Default constructor for a unit sphere at the origin with a black color.
-     */
-    Sphere();
-
-    /**
      * @brief Constructs a sphere with a specified center, radius, and color.
-     * @param iX X-coordinate of the center.
-     * @param iY Y-coordinate of the center.
-     * @param iZ Z-coordinate of the center.
+     * @param iOrigin Center of the sphere.
      * @param iRadius Radius of the sphere.
      * @param iColor Color of the sphere.
      */
-    Sphere(float iX, float iY, float iZ, float iRadius, const Color &iColor);
+    Sphere(Vector3 iOrigin, float iRadius, const Color &iColor);
 
     /**
      * @brief Destructor for the sphere.
@@ -38,28 +31,16 @@ public:
     ~Sphere();
 
     /**
-     * @brief Gets the X-coordinate of the center.
-     * @return X-coordinate of the center.
+     * @brief Gets the center of the sphere.
+     * @return Center of the sphere.
      */
-    float getX() const;
-
-    /**
-     * @brief Gets the Y-coordinate of the center.
-     * @return Y-coordinate of the center.
-     */
-    float getY() const;
-
-    /**
-     * @brief Gets the Z-coordinate of the center.
-     * @return Z-coordinate of the center.
-     */
-    float getZ() const;
+    Vector3 Origin() const;
 
     /**
      * @brief Gets the radius of the sphere.
      * @return Radius of the sphere.
      */
-    float getRadius() const;
+    float Radius() const;
 
     /**
      * @brief Gets the color of the sphere.
@@ -72,15 +53,13 @@ public:
      * @param iRay The ray to check for intersection.
      * @return The intersection point as Vector3 if it exists, std::nullopt otherwise.
      */
-    std::optional<Vector3> intersects(const Ray &iRay) const override;
+    std::optional<std::vector<Vector3>> intersects(const Ray &iRay) const override;
 
     /**
      * @brief Sets the center of the sphere.
-     * @param iX New X-coordinate of the center.
-     * @param iY New Y-coordinate of the center.
-     * @param iZ New Z-coordinate of the center.
+     * @param iOrigin New center of the sphere.
      */
-    void setCenter(float iX, float iY, float iZ);
+    void setOrigin(Vector3 iOrigin);
 
     /**
      * @brief Sets the radius of the sphere.

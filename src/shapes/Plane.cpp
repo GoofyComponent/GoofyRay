@@ -1,14 +1,6 @@
 #include "Plane.hpp"
 
 /**
- * @brief Default constructor that creates a plane with a normal vector pointing up and a distance of 0.
- */
-Plane::Plane()
-    : normal(Vector3(0, 1, 0)), d(0)
-{
-}
-
-/**
  * @brief Constructs a plane with a specified normal vector and distance from the origin.
  * @param normal Normal vector of the plane.
  * @param distance Distance from the origin.
@@ -32,11 +24,11 @@ Plane::Plane(const Vector3 &point, const Vector3 &normal)
 /**
  * @brief Checks if a ray intersects with the plane.
  * @param ray The ray to check for intersection.
- * @return Distance to the intersection point if it exists, otherwise std::nullopt.
+ * @return Intersection point if it exists, otherwise std::nullopt.
  */
-std::optional<float> Plane::intersect(const Ray &ray) const
+std::optional<std::vector<Vector3>> Plane::intersects(const Ray &ray) const
 {
-    float denom = normal * ray.direction;
+    float denom = normal * ray.Direction();
     if (denom > -1e-6)
     {
         // The ray is parallel to the plane (denom == 0)
@@ -46,16 +38,19 @@ std::optional<float> Plane::intersect(const Ray &ray) const
         return std::nullopt;
     }
 
-    float t = -(normal * ray.origin) + d / denom;
+    float t = -(normal * ray.Origin()) + d / denom;
 
-    Vector3 diff = plane.c - ray.o;
-    float num = diff.dot(plane.n);
+    Vector3 diff = normal - ray.Origin();
+    float num = diff * normal;
 
     float t = num / denom;
 
-    Vector3 p = ray.o + ray.d * t;
+    Vector3 p = ray.Origin() + ray.Direction() * t;
 
-    return p;
+    std::vector<Vector3> intersectionPoints;
+    intersectionPoints.push_back(p);
+
+    return intersectionPoints;
 }
 
 /**

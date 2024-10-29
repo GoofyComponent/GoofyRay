@@ -19,11 +19,6 @@ private:
 
 public:
     /**
-     * @brief Default constructor that creates an empty polygon with a black color.
-     */
-    Polygon();
-
-    /**
      * @brief Constructs a polygon with specified vertices and color.
      * @param iVertices List of vertices defining the polygon.
      * @param iColor Color of the polygon.
@@ -39,7 +34,7 @@ public:
      * @brief Gets the vertices of the polygon.
      * @return A vector of vertices defining the polygon.
      */
-    const std::vector<Vector3> &getVertices() const;
+    const std::vector<Vector3> &Vertices() const;
 
     /**
      * @brief Gets the color of the polygon.
@@ -57,14 +52,14 @@ public:
      * @brief Get the normals of all the faces of the polygon.
      * @return A vector of normals for each face of the polygon.
      */
-    std::Vector3 getAllNormals() const;
+    std::vector<Vector3> AllNormals() const;
 
     /**
      * @brief Checks if a ray intersects with the polygon.
      * @param iRay The ray to check for intersection.
      * @return True if the ray intersects with the polygon, false otherwise.
      */
-    std::optional<Vector3> intersects(const Ray &iRay) const override;
+    std::optional<std::vector<Vector3>> intersects(const Ray &iRay) const override;
 
     /**
      * @brief Overriding the output stream operator for Polygon.

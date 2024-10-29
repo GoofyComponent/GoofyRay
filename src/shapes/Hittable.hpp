@@ -14,7 +14,7 @@ class Hittable
 {
 
 public:
-    virtual ~hittable() = default;
+    virtual ~Hittable() = default;
 
-    virtual std::optional<Vector3> intersects(const Ray &iRay) const = 0;
+    virtual std::optional<std::vector<Vector3>> intersects(const Ray &iRay) const = 0;
 };

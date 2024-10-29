@@ -1,20 +1,13 @@
 #include "Sphere.hpp"
 
 /**
- * @brief Default constructor for a unit sphere at the origin with a black color.
- */
-Sphere::Sphere() : x(0), y(0), z(0), radius(1), color(Color()) {}
-
-/**
  * @brief Constructs a sphere with a specified center, radius, and color.
- * @param iX X-coordinate of the center.
- * @param iY Y-coordinate of the center.
- * @param iZ Z-coordinate of the center.
+ * @param iOrigin Center of the sphere.
  * @param iRadius Radius of the sphere.
  * @param iColor Color of the sphere.
  */
-Sphere::Sphere(float iX, float iY, float iZ, float iRadius, const Color &iColor)
-    : x(iX), y(iY), z(iZ), radius(iRadius), color(iColor) {}
+Sphere::Sphere(Vector3 iOrigin, float iRadius, const Color &iColor)
+    : origin(iOrigin), radius(iRadius), color(iColor) {}
 
 /**
  * @brief Destructor for the sphere.
@@ -22,37 +15,19 @@ Sphere::Sphere(float iX, float iY, float iZ, float iRadius, const Color &iColor)
 Sphere::~Sphere() {}
 
 /**
- * @brief Gets the X-coordinate of the center.
- * @return X-coordinate of the center.
+ * @brief Gets the center of the sphere.
+ * @return Center of the sphere.
  */
-float Sphere::getX() const
+Vector3 Sphere::Origin() const
 {
-    return x;
-}
-
-/**
- * @brief Gets the Y-coordinate of the center.
- * @return Y-coordinate of the center.
- */
-float Sphere::getY() const
-{
-    return y;
-}
-
-/**
- * @brief Gets the Z-coordinate of the center.
- * @return Z-coordinate of the center.
- */
-float Sphere::getZ() const
-{
-    return z;
-}
+    return origin;
+};
 
 /**
  * @brief Gets the radius of the sphere.
  * @return Radius of the sphere.
  */
-float Sphere::getRadius() const
+float Sphere::Radius() const
 {
     return radius;
 }
@@ -71,25 +46,24 @@ Color Sphere::getColor() const
  * @param iRay The ray to check for intersection.
  * @return Returns the point of intersection if the ray intersects with the sphere, otherwise returns std::nullopt.
  */
-std::optional<Vector3> Sphere::intersects(const Ray &iRay) const
+std::optional<std::vector<Vector3>> Sphere::intersects(const Ray &iRay) const
 {
-    c = Vector3(x, y, z);
 
-    oc = c - iRay.Origin;
+    Vector3 oc = origin - iRay.Origin();
 
     // Calculate the dot product which is just a float
-    dotProd = oc * iRay.Direction;
+    Vector3 dotProd = oc * iRay.Direction();
 
     // Multiply the dot product with the ray's direction vector
-    op = dotProd * iRay.Direction;
+    Vector3 op = dotProd * iRay.Direction();
 
-    p = iRay.Origin + op;
+    Vector3 p = iRay.Origin() + op;
 
     // Displacement vector from c to p
-    cp = p - c;
+    Vector3 cp = p - origin;
 
     // calculate the length of a vector using pythagorus !
-    distance = cp.length();
+    double distance = cp.length();
 
     // No intersection if the distance from between P and C
     // is greater than the radius of our sphere!
@@ -98,24 +72,23 @@ std::optional<Vector3> Sphere::intersects(const Ray &iRay) const
         return std::nullopt;
     }
 
-    a = Math.sqrt(radius * radius - distance * distance);
+    double a = std::sqrt(radius * radius - distance * distance);
 
-    p1 = p + (a * -iRay.Direction);
+    Vector3 p1 = p + ((-iRay.Direction()) * a);
 
-    return p1
+    std::vector<Vector3> intersectionPoints;
+    intersectionPoints.push_back(p1);
+
+    return intersectionPoints;
 }
 
 /**
  * @brief Sets the center of the sphere.
- * @param iX New X-coordinate of the center.
- * @param iY New Y-coordinate of the center.
- * @param iZ New Z-coordinate of the center.
+ * @param iOrigin New center of the sphere.
  */
-void Sphere::setCenter(float iX, float iY, float iZ)
+void Sphere::setOrigin(Vector3 iOrigin)
 {
-    x = iX;
-    y = iY;
-    z = iZ;
+    origin = iOrigin;
 }
 
 /**
@@ -137,18 +110,16 @@ void Sphere::setColor(const Color &iColor)
 }
 
 /**
- * @brief Overriding the output stream operator for Sphere.
- *
- * This function outputs the sphere's center coordinates, radius, and color to an output stream.
- *
+ * @brief Overloaded stream insertion operator to output the sphere's properties.
  * @param _stream The output stream.
- * @param sphere The Sphere object to output.
- * @return std::ostream& A reference to the output stream.
+ * @param sphere The sphere to output.
+ * @return The output stream.
  */
 std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere)
 {
-    _stream << "Sphere(Center: (" << sphere.x << ", " << sphere.y << ", " << sphere.z
-            << "), Radius: " << sphere.radius
-            << ", Color: " << sphere.color << ")";
+    _stream << "Sphere: " << std::endl;
+    _stream << "Center: " << sphere.Origin() << std::endl;
+    _stream << "Radius: " << sphere.Radius() << std::endl;
+    _stream << "Color: " << sphere.getColor() << std::endl;
     return _stream;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector3.hpp"
+#include "Vector3.h"
 #include "Ray.hpp"
 #include "Hittable.hpp"
 
@@ -16,11 +16,6 @@ private:
 
 public:
     /**
-     * @brief Default constructor that creates a plane with a normal vector pointing up and a distance of 0.
-     */
-    Plane();
-
-    /**
      * @brief Constructs a plane with a specified normal vector and distance from the origin.
      * @param normal Normal vector of the plane.
      * @param distance Distance from the origin.
@@ -35,11 +30,23 @@ public:
     Plane(const Vector3 &point, const Vector3 &normal);
 
     /**
+     * @brief Gets the normal vector of the plane.
+     * @return Vector3 The normal vector of the plane.
+     */
+    Vector3 Normal() const;
+
+    /**
+     * @brief Gets the distance from the origin of the plane.
+     * @return float The distance from the origin of the plane.
+     */
+    float Distance() const;
+
+    /**
      * @brief Checks if a ray intersects with the plane.
      * @param ray The ray to check for intersection.
      * @return Distance to the intersection point if it exists, otherwise std::nullopt.
      */
-    std::optional<float> intersect(const Ray &ray) const override;
+    std::optional<std::vector<Vector3>> intersects(const Ray &ray) const override;
 
     /**
      * @brief Overriding the output stream operator for Plane.

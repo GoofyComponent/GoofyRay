@@ -1,11 +1,6 @@
 #include "Polygon.hpp"
 
 /**
- * @brief Default constructor for a unit polygon with a black color.
- */
-Polygon::Polygon() : vertices(), color(Color()) {}
-
-/**
  * @brief Constructs a polygon with a specified list of vertices and color.
  * @param iVertices List of vertices defining the polygon.
  * @param iColor Color of the polygon.
@@ -22,7 +17,7 @@ Polygon::~Polygon() {}
  * @brief Gets the vertices of the polygon.
  * @return A vector of vertices defining the polygon.
  */
-const std::vector<Vector3> &Polygon::getVertices() const
+const std::vector<Vector3> &Polygon::Vertices() const
 {
     return vertices;
 }
@@ -50,7 +45,7 @@ void Polygon::setColor(const Color &iColor)
  * @param iRay The ray to check for intersection.
  * @return Returns a vector of point of intersection for each face of the polygon, otherwise returns std::nullopt.
  */
-std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
+std::optional<std::vector<Vector3>> Polygon::intersects(const Ray &iRay) const
 {
     if (vertices.size() < 3)
     {
@@ -71,7 +66,7 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
         Vector3 edge2 = Vector3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
 
         // Calculate the determinant using cross product
-        Vector3 h = iRay.Direction.cross(edge2);
+        Vector3 h = iRay.Direction().cross(edge2);
         float a = edge1 * h;
 
         // If a is close to 0, the ray is parallel to this triangle
@@ -79,30 +74,30 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
             continue;
 
         float f = 1.0 / a;
-        Vector3 s = Vector3(iRay.Origin.x - v0.x, iRay.Origin.y - v0.y, iRay.Origin.z - v0.z);
-        float u = f * s * h;
+        Vector3 s = Vector3(iRay.Origin().x - v0.x, iRay.Origin().y - v0.y, iRay.Origin().z - v0.z);
+        float u = s * h * f;
 
         // Check if intersection is outside the triangle
         if (u < 0.0 || u > 1.0)
             continue;
 
         Vector3 q = s.cross(edge1);
-        float v = f * iRay.Direction * q;
+        float v = iRay.Direction() * q * f;
 
         // Check if intersection is outside the triangle
         if (v < 0.0 || u + v > 1.0)
             continue;
 
         // Calculate the distance t along the ray to the intersection point
-        float t = f * edge2 * q;
+        float t = edge2 * q * f;
 
         // Intersection occurs if t > 0 (in front of the ray's origin)
         if (t > std::numeric_limits<float>::epsilon())
         {
             Vector3 intersectionPoint = Vector3(
-                iRay.Origin.x + iRay.Direction.x * t,
-                iRay.Origin.y + iRay.Direction.y * t,
-                iRay.Origin.z + iRay.Direction.z * t);
+                iRay.Origin().x + iRay.Direction().x * t,
+                iRay.Origin().y + iRay.Direction().y * t,
+                iRay.Origin().z + iRay.Direction().z * t);
             intersectionPoints.push_back(intersectionPoint);
         }
     }
