@@ -2,13 +2,14 @@
 
 #include "Color.hpp"
 #include "Ray.hpp"
+#include "Hittable.hpp"
 #include <iostream>
 
 /**
  * @class Sphere
  * @brief Represents a 3D sphere with position, radius, and color.
  */
-class Sphere
+class Sphere : public Hittable
 {
 private:
     float x, y, z;
@@ -71,7 +72,7 @@ public:
      * @param iRay The ray to check for intersection.
      * @return The intersection point as Vector3 if it exists, std::nullopt otherwise.
      */
-    std::optional<Vector3> intersects(const Ray &iRay) const;
+    std::optional<Vector3> intersects(const Ray &iRay) const override;
 
     /**
      * @brief Sets the center of the sphere.

@@ -78,10 +78,10 @@ std::optional<Vector3> Sphere::intersects(const Ray &iRay) const
     oc = c - iRay.Origin;
 
     // Calculate the dot product which is just a float
-    dotProd = (oc.x * iRay.Direction.x) + (oc.y * iRay.Direction.y) + (oc.z * iRay.Direction.z);
+    dotProd = oc * iRay.Direction;
 
     // Multiply the dot product with the ray's direction vector
-    op = dotProd *iRay.Direction = (dotProd * iRay.Direction.x, dotProd * iRay.Direction.y, dotProd * iRay.Direction.z);
+    op = dotProd * iRay.Direction;
 
     p = iRay.Origin + op;
 

@@ -3,6 +3,7 @@
 #include "Color.hpp"
 #include "Vector3.h"
 #include "Ray.hpp"
+#include "Hittable.hpp"
 #include <vector>
 #include <iostream>
 
@@ -10,7 +11,7 @@
  * @class Polygon
  * @brief Represents a 3D polygon with vertices and a color.
  */
-class Polygon
+class Polygon : public Hittable
 {
 private:
     std::vector<Vector3> vertices;
@@ -63,7 +64,7 @@ public:
      * @param iRay The ray to check for intersection.
      * @return True if the ray intersects with the polygon, false otherwise.
      */
-    std::optional<Vector3> intersects(const Ray &iRay) const;
+    std::optional<Vector3> intersects(const Ray &iRay) const override;
 
     /**
      * @brief Overriding the output stream operator for Polygon.

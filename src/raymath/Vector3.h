@@ -2,7 +2,8 @@
 #include <cmath>
 #include <ostream>
 
-class Vector3 {
+class Vector3
+{
 public:
     float x, y, z;
 
@@ -29,9 +30,13 @@ public:
 
     // Method to get a normalized vector (unit vector)
     Vector3 normalized() const;
+
+    // Method to get the cross product of two vectors
+    Vector3 cross(const Vector3 &other) const;
 };
 
 // Overloading the stream operator to display the vector
-inline std::ostream &operator<<(std::ostream &out, const Vector3 &v) {
+inline std::ostream &operator<<(std::ostream &out, const Vector3 &v)
+{
     return out << v.x << ' ' << v.y << ' ' << v.z;
 }

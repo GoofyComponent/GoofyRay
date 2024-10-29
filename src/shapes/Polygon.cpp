@@ -3,7 +3,7 @@
 /**
  * @brief Default constructor for a unit polygon with a black color.
  */
-Polygon::Polygon() : color(Color()) {}
+Polygon::Polygon() : vertices(), color(Color()) {}
 
 /**
  * @brief Constructs a polygon with a specified list of vertices and color.
@@ -45,21 +45,6 @@ void Polygon::setColor(const Color &iColor)
     color = iColor;
 }
 
-// !TBD Helper function for dot product
-float dotProduct(const Vector3 &a, const Vector3 &b)
-{
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
-// !TBD Helper function for cross product
-Vector3 crossProduct(const Vector3 &a, const Vector3 &b)
-{
-    return Vector3(
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x);
-}
-
 /**
  * @brief Checks if a ray intersects with the polygon.
  * @param iRay The ray to check for intersection.
@@ -86,8 +71,8 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
         Vector3 edge2 = Vector3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
 
         // Calculate the determinant using cross product
-        Vector3 h = crossProduct(iRay.Direction, edge2);
-        float a = dotProduct(edge1, h);
+        Vector3 h = iRay.Direction.cross(edge2);
+        float a = edge1 * h;
 
         // If a is close to 0, the ray is parallel to this triangle
         if (std::fabs(a) < std::numeric_limits<float>::epsilon())
@@ -95,21 +80,21 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
 
         float f = 1.0 / a;
         Vector3 s = Vector3(iRay.Origin.x - v0.x, iRay.Origin.y - v0.y, iRay.Origin.z - v0.z);
-        float u = f * dotProduct(s, h);
+        float u = f * s * h;
 
         // Check if intersection is outside the triangle
         if (u < 0.0 || u > 1.0)
             continue;
 
-        Vector3 q = crossProduct(s, edge1);
-        float v = f * dotProduct(iRay.Direction, q);
+        Vector3 q = s.cross(edge1);
+        float v = f * iRay.Direction * q;
 
         // Check if intersection is outside the triangle
         if (v < 0.0 || u + v > 1.0)
             continue;
 
         // Calculate the distance t along the ray to the intersection point
-        float t = f * dotProduct(edge2, q);
+        float t = f * edge2 * q;
 
         // Intersection occurs if t > 0 (in front of the ray's origin)
         if (t > std::numeric_limits<float>::epsilon())
@@ -133,7 +118,15 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
     }
 }
 
-// Overriding the output stream operator for Polygon
+/**
+ * @brief Overriding the output stream operator for Polygon.
+ *
+ * This function outputs the polygon's vertices and color to an output stream.
+ *
+ * @param _stream The output stream.
+ * @param polygon The Polygon object to output.
+ * @return std::ostream& A reference to the output stream.
+ */
 std::ostream &operator<<(std::ostream &_stream, const Polygon &polygon)
 {
     _stream << "Polygon with " << polygon.vertices.size() << " vertices:\n";
