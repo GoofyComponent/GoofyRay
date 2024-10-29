@@ -1,7 +1,8 @@
 #pragma once
 #include "Vector3.h"
 
-class Ray {
+class Ray
+{
 private:
     Vector3 origin;
     Vector3 direction;
