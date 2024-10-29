@@ -38,6 +38,10 @@ Color Color::operator+(Color const& col) {
   return c;
 }
 
+Color Color::operator*(double scalar) const {
+    return Color(r * scalar, g * scalar, b * scalar);
+}
+
 Color& Color::operator=(Color const& col) {
   r = col.r;
   g = col.g;
