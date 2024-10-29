@@ -13,14 +13,17 @@ target_include_directories(goofyray PUBLIC
                             "${PROJECT_SOURCE_DIR}/src/rayimage"
                             "${PROJECT_SOURCE_DIR}/src/lodepng"
                             "${PROJECT_SOURCE_DIR}/src/userinputs"
+                            "${PROJECT_SOURCE_DIR}/src/core"
                            )
 
 add_subdirectory(./src/raymath)
 add_subdirectory(./src/rayimage)
 add_subdirectory(./src/lodepng)
 add_subdirectory(./src/userinputs)
+add_subdirectory(./src/core)
 
 target_link_libraries(goofyray PUBLIC raymath)
 target_link_libraries(goofyray PUBLIC rayimage)
 target_link_libraries(goofyray PUBLIC lodepng)
 target_link_libraries(goofyray PUBLIC userinputs)
+target_link_libraries(goofyray PUBLIC core)
