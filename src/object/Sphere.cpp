@@ -1,65 +1,89 @@
 #include "Sphere.hpp"
 #include <cmath>
 
-Sphere::Sphere(Vector3 center, double radius, Color color, double reflectivity)
-    : m_center(center), m_radius(radius), m_color(color), m_reflectivity(reflectivity) {}
-
-// Renvoie la couleur de la sphère
-Color Sphere::getColor() const { return m_color; }
+Sphere::Sphere(Vector3 center, double radius, Color color, double reflectivity) :
+    origin(center), radius(radius), Object(color, reflectivity) {}
 
 // Détecte l'intersection avec un rayon
-std::optional<std::vector<Vector3>> Sphere::intersects(const Ray &ray) const {
-    Vector3 oc = ray.Origin() - m_center;
-    double a = ray.Direction() * ray.Direction();
-    double b = 2.0 * (oc * ray.Direction());
-    double c = oc * oc - m_radius * m_radius;
-    double discriminant = b * b - 4 * a * c;
+std::optional<double> Sphere::intersects(const Ray &iRay) const {
+    Vector3 oc = origin - iRay.Origin();
 
-    if (discriminant > 0) {
-        double t1 = (-b - std::sqrt(discriminant)) / (2.0 * a);
-        double t2 = (-b + std::sqrt(discriminant)) / (2.0 * a);
-        return std::vector<Vector3>{ray.At(t1), ray.At(t2)};
-    }
-    return std::nullopt;
-}
+    // Calculate the dot product which is just a float
+    float dotProd = oc * iRay.Direction();
 
-// Renvoie la distance de l'intersection la plus proche
-std::optional<double> Sphere::intersect(const Ray &ray) const {
-    auto points = intersects(ray);
+    // Multiply the dot product with the ray's direction vector
+    Vector3 op = dotProd * iRay.Direction();
 
-    // Si l'intersection n'existe pas, renvoie std::nullopt
-    if (!points || points->empty()) return std::nullopt;
+    Vector3 p = iRay.Origin() + op;
 
-    // Calcul des distances pour chaque point d'intersection
-    std::vector<double> distances;
-    for (const auto& point : *points) {
-        double distance = (point - ray.Origin()).length();
-        distances.push_back(distance);
+    // Displacement vector from c to p
+    Vector3 cp = p - origin;
+
+    // calculate the length of a vector using pythagoras
+    float distance = cp.length();
+
+
+    if (distance > radius) {
+        return std::nullopt;
     }
 
-    // Renvoie la distance la plus proche
-    return *std::min_element(distances.begin(), distances.end());
+    float halfChord = std::sqrt(radius * radius - distance * distance);
+    double t = dotProd - halfChord; // Calcule la distance t depuis l'origine du rayon
+
+    // Renvoie la distance de l'intersection
+    return t;
 }
+
 
 bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
-    auto distance = intersect(r);
+    // Récupère la distance d'intersection si elle existe
+    auto distance = intersects(r);
 
     // Vérifie si une intersection valide existe dans la plage t_min et t_max
-    if (!distance || *distance < t_min || *distance > t_max) {
+    if (!distance) {
+        std::cout << "No valid hit object in range" << std::endl;
         return false;
     }
 
+    // Enregistrement des informations d'intersection
     rec.t = *distance;
     rec.position = r.At(rec.t);
-    Vector3 outward_normal = (rec.position - m_center) / m_radius;
-    rec.set_face_normal(r, outward_normal);
-    rec.color = m_color;
-    rec.reflectivity = m_reflectivity;  // Ajoute la réflectivité
 
+    // Calcul de la normale et ajustement pour qu'elle soit orientée dans la bonne direction
+    Vector3 outward_normal = (rec.position - origin) / radius;
+    rec.set_face_normal(r, outward_normal);
+    rec.color = getColor();
+    rec.reflectivity = m_reflectivity;
+
+    std::cout << "Hit object at distance " << rec.t << " with normal " << rec.normal << std::endl;
 
     return true;
 }
 
 Sphere::~Sphere() = default;
 
+std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere) {
+    _stream << "Sphere: " << std::endl;
+    _stream << "Center: " << sphere.Origin() << std::endl;
+    _stream << "Radius: " << sphere.Radius() << std::endl;
+    _stream << "Color: " << sphere.getColor() << std::endl;
+    return _stream;
+}
 
+
+// Renvoie la couleur de la sphère
+Color Sphere::getColor() const { return m_color; }
+
+void Sphere::setColor(const Color &iColor) { m_color = iColor; }
+
+void Sphere::setRadius(float iRadius) { radius = iRadius; }
+
+void Sphere::setOrigin(Vector3 iOrigin) { origin = iOrigin; }
+
+float Sphere::Radius() const { return radius; }
+
+Vector3 Sphere::Origin() const { return origin; }
+
+void Sphere::setReflectivity(double iReflectivity) { m_reflectivity = iReflectivity; }
+
+double Sphere::getReflectivity() { return m_reflectivity; }
