@@ -7,19 +7,19 @@
 #include "Image.hpp"
 #include "Object.hpp"
 
-int main() {
+int main()
+{
     // Couleurs distinctes pour chaque sphère
-    Color colorLeft(1, 0, 0);     // Rouge pour la sphère de gauche
-    Color colorMiddle(0, 0, 1);   // Bleu pour la sphère du milieu
-    Color colorRight(0, 1, 0);    // Vert pour la sphère de droite
+    Color colorLeft(1, 0, 0);   // Rouge pour la sphère de gauche
+    Color colorMiddle(0, 0, 1); // Bleu pour la sphère du milieu
+    Color colorRight(0, 1, 0);  // Vert pour la sphère de droite
 
     // Créer les sphères du plus grand au plus petit avec des positions en Z pour la profondeur
-    Sphere sphereLeft(Vector3(2.5, 0, -7), 1, colorRight);   // Encore plus loin
-    Sphere sphereMiddle(Vector3(0, 0, -6), 1, colorMiddle);   // Un peu plus loin
-    Sphere sphereRight(Vector3(-2.5, 0, -5), 1, colorLeft);    // Position la plus proche
-    
+    Sphere sphereLeft(Vector3(2.5, 0, -7), 1, colorRight);  // Encore plus loin
+    Sphere sphereMiddle(Vector3(0, 0, -6), 1, colorMiddle); // Un peu plus loin
+    Sphere sphereRight(Vector3(-2.5, 0, -5), 1, colorLeft); // Position la plus proche
 
-    std::vector<Object*> objects = { &sphereLeft, &sphereMiddle, &sphereRight };
+    std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
 
     // Caméra avec un angle de vue ajusté pour capturer l'ensemble
     int imageWidth = 800;
@@ -36,8 +36,10 @@ int main() {
     Image image(imageWidth, imageHeight, scene.getBackground()); // Fond bleu ciel
 
     // Boucle sur chaque pixel de l'image
-    for (unsigned int y = 0; y < imageHeight; ++y) {
-        for (unsigned int x = 0; x < imageWidth; ++x) {
+    for (unsigned int y = 0; y < imageHeight; ++y)
+    {
+        for (unsigned int x = 0; x < imageWidth; ++x)
+        {
             // Calculer la direction du rayon pour le pixel (x, y)
             Ray ray = camera.generateRay(x, y);
 
