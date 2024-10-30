@@ -17,4 +17,6 @@ public:
     virtual std::optional<Vector3> intersects(const Ray &iRay) const = 0;
 
     virtual Color getColor() const = 0;
+
+    virtual Vector3 getNormal(const Vector3 &point) const = 0;
 };

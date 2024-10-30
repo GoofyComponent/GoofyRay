@@ -83,4 +83,6 @@ public:
      * @return std::ostream& A reference to the output stream.
      */
     friend std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere);
+
+    Vector3 getNormal(const Vector3 &point) const override;
 };

@@ -119,3 +119,7 @@ std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere)
     _stream << "Color: " << sphere.getColor() << std::endl;
     return _stream;
 }
+
+Vector3 Sphere::getNormal(const Vector3 &point) const {
+    return (point - origin).normalized();
+}

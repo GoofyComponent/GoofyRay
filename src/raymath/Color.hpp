@@ -83,4 +83,7 @@ public:
    * @return std::ostream& A reference to the output stream.
    */
   friend std::ostream & operator<<(std::ostream & _stream, Color const & col);
+
+  Color operator*(const Color &other) const; // Ajout dans Color.hpp
+
 };

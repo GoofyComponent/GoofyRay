@@ -49,6 +49,11 @@ Color& Color::operator=(Color const& col) {
   return *this;
 }
 
+Color Color::operator*(const Color &other) const {
+    return Color(r * other.r, g * other.g, b * other.b);
+}
+
+
 std::ostream & operator<<(std::ostream & _stream, Color const & col) {  
   return _stream << "(" << col.r << "," << col.g << "," << col.b << ")";
 }
