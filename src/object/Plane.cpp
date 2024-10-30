@@ -49,10 +49,6 @@ std::optional<Vector3> Plane::intersects(const Ray &ray) const
     float denom = normal * ray.Direction();
     if (denom > -1e-6)
     {
-        // The ray is parallel to the plane (denom == 0)
-        // OR The angle between the the incoming ray and the normal is > 90°
-        //    meaning the plane is behind us
-
         return std::nullopt;
     }
 

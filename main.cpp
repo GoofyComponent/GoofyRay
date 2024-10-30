@@ -1,3 +1,5 @@
+#include <iostream>
+#include <vector>
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "Sphere.hpp"
@@ -7,24 +9,20 @@
 
 int main()
 {
-    // Couleurs distinctes pour chaque sphère
-    Color colorLeft(1, 0, 0);   // Rouge pour la sphère de gauche
-    Color colorMiddle(0, 0, 1); // Bleu pour la sphère du milieu
-    Color colorRight(0, 1, 0);  // Vert pour la sphère de droite
+    Color colorLeft(1, 0, 0);
+    Color colorMiddle(0, 0, 1);
+    Color colorRight(0, 1, 0);
 
-    // Créer les sphères du plus grand au plus petit avec des positions en Z pour la profondeur
-    Sphere sphereLeft(Vector3(2.5, 0, 4), 1, colorRight);  // Encore plus loin
-    Sphere sphereMiddle(Vector3(0, 0, 5), 1, colorMiddle); // Un peu plus loin
-    Sphere sphereRight(Vector3(-2.5, 0, 4), 1, colorLeft); // Position la plus proche
+    Sphere sphereLeft(Vector3(3.5, 0, 5), 0.5, colorRight);  
+    Sphere sphereMiddle(Vector3(0, 0, 5), 0.5, colorMiddle); 
+    Sphere sphereRight(Vector3(-3.5, 0, 5), 0.5, colorLeft);
 
     std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
 
-    // Caméra avec un angle de vue ajusté pour capturer l'ensemble
     int imageWidth = 1024;
     int imageHeight = 1024;
-    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1, 0), 90.0, imageWidth, imageHeight);
+    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), imageWidth, imageHeight);
 
-    // Créer la scène avec la caméra et les objets sans lumière ni plan
     Scene scene(camera, objects);
 
     // Définir le fond bleu ciel pour la scène
@@ -49,7 +47,6 @@ int main()
         }
     }
 
-    // Sauvegarder l'image dans un fichier PNG
     image.WriteFile("../../../output.png");
 
     std::cout << "Image rendue et sauvegardée en tant que 'output.png'." << std::endl;
