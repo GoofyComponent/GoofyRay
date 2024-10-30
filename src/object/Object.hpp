@@ -1,16 +1,20 @@
 #pragma once
-#include "../raymath/Ray.hpp"
+
 #include "../raymath/Color.hpp"
-#include <optional>
+#include "../raymath/Vector3.h"
+#include "../raymath/Ray.hpp"
 #include <vector>
 
-class Object {
+/**
+ * @class Object
+ * @brief Represents a 3D object object that can be intersected by a ray.
+ */
+class Object
+{
 public:
     virtual ~Object() = default;
 
-    // Méthode virtuelle pure pour l'intersection
-    virtual std::optional<std::vector<Vector3>> intersects(const Ray &ray) const = 0;
+    virtual std::optional<Vector3> intersects(const Ray &iRay) const = 0;
 
-    // Méthode virtuelle pure pour obtenir la couleur
     virtual Color getColor() const = 0;
 };
