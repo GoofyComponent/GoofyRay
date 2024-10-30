@@ -10,7 +10,7 @@ const Camera &Scene::getCamera() const
 }
 
 // Getter pour les objets
-const std::vector<Object *> &Scene::getobjects() const
+const std::vector<Object *> &Scene::getObjects() const
 {
     return m_objects;
 }
@@ -28,7 +28,7 @@ void Scene::setCamera(const Camera &camera)
 }
 
 // Setter pour les objets
-void Scene::setobjects(const std::vector<Object *> &objects)
+void Scene::setObjects(const std::vector<Object *> &objects)
 {
     m_objects = objects;
 }
@@ -43,22 +43,20 @@ void Scene::setBackground(const Color &color)
 Color Scene::traceRay(const Ray &ray) const
 {
     double closestDistance = std::numeric_limits<double>::max();
-    Object *closestobject = nullptr;
+    const Object *closestobject = nullptr;
     Vector3 hitPoint;
 
-    for (const auto &object : m_objects)
+    for (const Object *object : m_objects)
     {
-        if (auto intersection = object->intersects(ray))
+        std::optional<Vector3> intersection = object->intersects(ray);
+        if (intersection.has_value())
         {
-            if (intersection.has_value())
+            double distance = (intersection.value() - ray.Origin()).length();
+            if (distance < closestDistance)
             {
-                double distance = (intersection.value() - ray.Origin()).length();
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestobject = object;
-                    hitPoint = intersection.value();
-                }
+                closestDistance = distance;
+                closestobject = object;
+                hitPoint = intersection.value();
             }
         }
     }

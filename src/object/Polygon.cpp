@@ -115,7 +115,7 @@ std::optional<Vector3> Polygon::intersects(const Ray &iRay) const
 std::ostream &operator<<(std::ostream &_stream, const Polygon &polygon)
 {
     _stream << "Polygon with " << polygon.vertices.size() << " vertices:\n";
-    for (const auto &vertex : polygon.vertices)
+    for (const Vector3 &vertex : polygon.vertices)
     {
         _stream << vertex << " ";
     }

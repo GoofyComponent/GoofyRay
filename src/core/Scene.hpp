@@ -13,12 +13,12 @@ public:
 
     // Getters
     const Camera &getCamera() const;
-    const std::vector<Object *> &getobjects() const;
+    const std::vector<Object *> &getObjects() const;
     const Color &getBackground() const;
 
     // Setters
     void setCamera(const Camera &camera);
-    void setobjects(const std::vector<Object *> &objects);
+    void setObjects(const std::vector<Object *> &objects);
     void setBackground(const Color &color);
 
     // Méthode pour tracer un rayon dans la scène
