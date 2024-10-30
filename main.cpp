@@ -1,5 +1,3 @@
-#include <iostream>
-#include <vector>
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "Sphere.hpp"
@@ -15,16 +13,16 @@ int main()
     Color colorRight(0, 1, 0);  // Vert pour la sphère de droite
 
     // Créer les sphères du plus grand au plus petit avec des positions en Z pour la profondeur
-    Sphere sphereLeft(Vector3(2.5, 0, -7), 1, colorRight);  // Encore plus loin
-    Sphere sphereMiddle(Vector3(0, 0, -6), 1, colorMiddle); // Un peu plus loin
-    Sphere sphereRight(Vector3(-2.5, 0, -5), 1, colorLeft); // Position la plus proche
+    Sphere sphereLeft(Vector3(2.5, 0, 4), 1, colorRight);  // Encore plus loin
+    Sphere sphereMiddle(Vector3(0, 0, 5), 1, colorMiddle); // Un peu plus loin
+    Sphere sphereRight(Vector3(-2.5, 0, 4), 1, colorLeft); // Position la plus proche
 
     std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
 
     // Caméra avec un angle de vue ajusté pour capturer l'ensemble
-    int imageWidth = 800;
-    int imageHeight = 600;
-    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0), 60.0, imageWidth, imageHeight);
+    int imageWidth = 1024;
+    int imageHeight = 1024;
+    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1, 0), 90.0, imageWidth, imageHeight);
 
     // Créer la scène avec la caméra et les objets sans lumière ni plan
     Scene scene(camera, objects);
