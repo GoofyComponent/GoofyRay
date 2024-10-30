@@ -68,6 +68,10 @@ public:
    */
   Color& operator=(Color const& col);
 
+
+  Color operator*(double scalar) const;  // Nouvelle surcharge
+
+
   /**
    * @brief Overriding the output stream operator.
    * 
