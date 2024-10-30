@@ -1,54 +1,95 @@
-#include <iostream>
 #include "Color.hpp"
+#include <algorithm>
 
+// Constructeurs et destructeur
+Color::Color() : r(0), g(0), b(0) {}
+Color::Color(float iR, float iG, float iB) : r(iR), g(iG), b(iB) {}
+Color::~Color() {}
 
-Color:: Color() : r(0), b(0), g(0)
-{  
+// Méthodes d'accès
+float Color::R() const { return r; }
+float Color::G() const { return g; }
+float Color::B() const { return b; }
+
+// Opérateurs arithmétiques de base
+Color Color::operator+(const Color &col) const {
+    return Color(std::clamp(r + col.r, 0.0f, 1.0f), std::clamp(g + col.g, 0.0f, 1.0f),
+                 std::clamp(b + col.b, 0.0f, 1.0f));
 }
 
-
-Color:: Color(float iR, float iG, float iB) : r(iR), g(iG), b(iB)
-{  
+Color Color::operator-(const Color &col) const {
+    return Color(std::clamp(r - col.r, 0.0f, 1.0f), std::clamp(g - col.g, 0.0f, 1.0f),
+                 std::clamp(b - col.b, 0.0f, 1.0f));
 }
 
-Color::~ Color()
-{
+Color Color::operator*(const Color &col) const { return Color(r * col.r, g * col.g, b * col.b); }
+
+Color Color::operator/(const Color &col) const { return Color(r / col.r, g / col.g, b / col.b); }
+
+// Opérateurs avec des scalaires
+Color Color::operator*(float scalar) const { return Color(r * scalar, g * scalar, b * scalar); }
+
+Color Color::operator/(float scalar) const { return Color(r / scalar, g / scalar, b / scalar); }
+
+// Opérateurs d'affectation avec des couleurs
+Color &Color::operator+=(const Color &col) {
+    r = std::clamp(r + col.r, 0.0f, 1.0f);
+    g = std::clamp(g + col.g, 0.0f, 1.0f);
+    b = std::clamp(b + col.b, 0.0f, 1.0f);
+    return *this;
 }
 
-float Color::R()
-{
-  return r;
+Color &Color::operator-=(const Color &col) {
+    r = std::clamp(r - col.r, 0.0f, 1.0f);
+    g = std::clamp(g - col.g, 0.0f, 1.0f);
+    b = std::clamp(b - col.b, 0.0f, 1.0f);
+    return *this;
 }
 
-float Color::G()
-{
-  return g;
+Color &Color::operator*=(const Color &col) {
+    r *= col.r;
+    g *= col.g;
+    b *= col.b;
+    return *this;
 }
 
-float Color::B()
-{
-  return b;
+Color &Color::operator/=(const Color &col) {
+    r /= col.r;
+    g /= col.g;
+    b /= col.b;
+    return *this;
 }
 
-Color Color::operator+(Color const& col) {
-  Color c;
-  c.r = fmax(fmin(r + col.r, 1), 0);
-  c.g = fmax(fmin(g + col.g, 1), 0);
-  c.b = fmax(fmin(b + col.b, 1), 0);
-  return c;
+// Opérateurs d'affectation avec des scalaires
+Color &Color::operator*=(float scalar) {
+    r = std::clamp(r * scalar, 0.0f, 1.0f);
+    g = std::clamp(g * scalar, 0.0f, 1.0f);
+    b = std::clamp(b * scalar, 0.0f, 1.0f);
+    return *this;
 }
 
-Color Color::operator*(double scalar) const {
-    return Color(r * scalar, g * scalar, b * scalar);
+Color &Color::operator/=(float scalar) {
+    r = std::clamp(r / scalar, 0.0f, 1.0f);
+    g = std::clamp(g / scalar, 0.0f, 1.0f);
+    b = std::clamp(b / scalar, 0.0f, 1.0f);
+    return *this;
 }
 
-Color& Color::operator=(Color const& col) {
-  r = col.r;
-  g = col.g;
-  b = col.b;
-  return *this;
+// Opérateur d'affectation
+Color &Color::operator=(const Color &col) {
+    r = col.r;
+    g = col.g;
+    b = col.b;
+    return *this;
 }
 
-std::ostream & operator<<(std::ostream & _stream, Color const & col) {  
-  return _stream << "(" << col.r << "," << col.g << "," << col.b << ")";
+// Opérateurs de comparaison
+bool Color::operator==(const Color &other) const { return r == other.r && g == other.g && b == other.b; }
+
+bool Color::operator!=(const Color &other) const { return !(*this == other); }
+
+// Affichage
+std::ostream &operator<<(std::ostream &os, const Color &color) {
+    os << "Color(" << color.r << ", " << color.g << ", " << color.b << ")";
+    return os;
 }
