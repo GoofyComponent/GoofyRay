@@ -1,6 +1,11 @@
 #include "Camera.hpp"
 #include <cmath>
 
+// Définit M_PI pour les systèmes qui ne le définissent pas (Windows)
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
 // Constructeur
 Camera::Camera(const Vector3& position, const Vector3& lookAt, const Vector3& up, double fov, int imageWidth, int imageHeight)
     : m_position(position), m_fov(fov), m_imageWidth(imageWidth), m_imageHeight(imageHeight) {
