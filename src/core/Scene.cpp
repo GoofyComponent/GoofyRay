@@ -54,7 +54,7 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
         diffuseColor += closestHit.color * light.color * (diffuseFactor * lightIntensity);
 
         Vector3 viewDir = (m_camera.getPosition() - closestHit.position).normalized();
-        Vector3 reflectDir = (2 * (closestHit.normal * lightDir) * closestHit.normal - lightDir).normalized();
+        Vector3 reflectDir = -(2 * (closestHit.normal * lightDir) * closestHit.normal - lightDir).normalized();
         double specularFactor =
                 std::pow(std::max(0.0, static_cast<double>(viewDir * reflectDir)), 32); // Shininess = 32
         specularColor += light.color * (specularFactor * lightIntensity);

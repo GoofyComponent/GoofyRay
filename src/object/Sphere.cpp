@@ -41,7 +41,6 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
 
     // Vérifie si une intersection valide existe dans la plage t_min et t_max
     if (!distance) {
-        std::cout << "No valid hit object in range" << std::endl;
         return false;
     }
 
@@ -55,7 +54,6 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
     rec.color = getColor();
     rec.reflectivity = m_reflectivity;
 
-    std::cout << "Hit object at distance " << rec.t << " with normal " << rec.normal << std::endl;
 
     return true;
 }

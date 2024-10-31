@@ -20,7 +20,6 @@ int main() {
     Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green, 0);
     Sphere sphereMiddle(Vector3(0, 0, -8), 1, Blue, 0);
     Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red, 0);
-    // Plane plane(Vector3(-20, 0, 0), 1, red, 0.4);
 
     Light light(Vector3(0, 40, -30), Color(1, 1, 1), 1);
     std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
