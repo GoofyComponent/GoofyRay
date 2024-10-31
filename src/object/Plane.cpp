@@ -30,11 +30,10 @@ std::optional<double> Plane::intersects(const Ray &ray) const {
 bool Plane::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
     auto distance = intersects(r);
 
-    // Vérifie si une intersection valide existe dans la plage t_min et t_max
     if (!distance || *distance < t_min || *distance > t_max) {
         return false;
     }
-    // Remplit le hit_record avec les informations d'intersection
+
     rec.t = *distance;
     rec.position = r.At(rec.t);
     rec.normal = normal; // La normale du plan est constante

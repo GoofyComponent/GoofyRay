@@ -30,21 +30,17 @@ std::optional<double> Sphere::intersects(const Ray &iRay) const {
     float halfChord = std::sqrt(radius * radius - distance * distance);
     double t = dotProd - halfChord; // Calcule la distance t depuis l'origine du rayon
 
-    // Renvoie la distance de l'intersection
     return t;
 }
 
 
 bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
-    // Récupère la distance d'intersection si elle existe
     auto distance = intersects(r);
 
-    // Vérifie si une intersection valide existe dans la plage t_min et t_max
     if (!distance) {
         return false;
     }
 
-    // Enregistrement des informations d'intersection
     rec.t = *distance;
     rec.position = r.At(rec.t);
 

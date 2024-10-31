@@ -12,7 +12,6 @@ int imageWidth = 1800;
 int imageHeight = 1900;
 
 int main() {
-    // Couleurs distinctes pour chaque sphère
     Color red(1, 0, 0); // Rouge pour la sphère de gauche
     Color Blue(0, 0, 1); // Bleu pour la sphère du milieu
     Color green(0, 1, 0); // Vert pour la sphère de droite
@@ -22,12 +21,14 @@ int main() {
     Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red, 0);
 
     Light light(Vector3(0, 40, -30), Color(1, 1, 1), 1);
+    Light light2(Vector3(0, -40, -30), Color(1, 0, 1), 1);
     std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
 
     Camera camera(Vector3(0, 0, 0), Vector3(0, 0, -1), imageWidth, imageHeight);
 
     Scene scene(camera, objects);
     scene.addLight(light);
+    scene.addLight(light2);
     scene.setBackground(Color(.03f, 0.0f, 0.08f));
 
     Image image(imageWidth, imageHeight, scene.getBackground()); // Fond bleu ciel
