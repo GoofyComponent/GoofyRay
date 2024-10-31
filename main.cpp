@@ -12,19 +12,20 @@ int imageWidth = 1800;
 int imageHeight = 1900;
 
 int main() {
-    Color red(1, 0, 0); // Rouge pour la sphère de gauche
-    Color Blue(0, 0, 1); // Bleu pour la sphère du milieu
-    Color green(0, 1, 0); // Vert pour la sphère de droite
+    Color red(1, 0, 0);
+    Color blue(0, 0, 1);
+    Color green(0, 1, 0);
+    Color yellow(1, 1, 0);
 
-    Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green, 0);
-    Sphere sphereMiddle(Vector3(0, 0, -8), 1, Blue, 0);
-    Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red, 0);
+    Sphere sphereLeft(Vector3(2.5, 0, 5), 1, green, 0);
+    Sphere sphereMiddle(Vector3(0, 0, 8), 1, blue, 0);
+    Sphere sphereRight(Vector3(-2.5, 0, 10), 1, red, 0);
+    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0);
 
-    Light light(Vector3(0, 40, -30), Color(1, 1, 1), 1);
-    Light light2(Vector3(0, -40, -30), Color(1, 0, 1), 1);
-    std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
+    Light light(Vector3(0, 40, 30), Color(1, 1, 1), 1);
+    std::vector<Object *> objects = {&plane, &sphereLeft, &sphereMiddle, &sphereRight};
 
-    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, -1), imageWidth, imageHeight);
+    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), imageWidth, imageHeight);
 
     Scene scene(camera, objects);
     scene.addLight(light);

@@ -1,23 +1,23 @@
 #include "Plane.hpp"
 
+Plane::Plane(const Vector3 &iPosition, const Vector3 &iNormal, const Color &iColor, double iReflection) :
+    Object(iColor, iReflection), position(iPosition), normal(iNormal) {}
 
-Plane::Plane(const Vector3 &normal, float distance, const Color &iColor, double iReflection) :
-    normal(normal.normalized()), d(distance), Object(iColor, iReflection) {}
+Plane::~Plane() = default;
 
 Vector3 Plane::Normal() const { return normal; }
 
-
-float Plane::Distance() const { return d; }
-
+Vector3 Plane::Position() const { return position; }
 
 std::optional<double> Plane::intersects(const Ray &ray) const {
-    float denom = normal * ray.Direction();
+    float denom = ray.Direction() * normal;
 
     if (std::abs(denom) < 1e-6) {
         return std::nullopt;
     }
 
-    float t = -(normal * ray.Origin() + d) / denom;
+    float num = (position - ray.Origin()) * normal;
+    double t = num / denom;
 
     if (t < 0) {
         return std::nullopt;
@@ -30,16 +30,16 @@ std::optional<double> Plane::intersects(const Ray &ray) const {
 bool Plane::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
     auto distance = intersects(r);
 
-    if (!distance || *distance < t_min || *distance > t_max) {
+    // Vérifie si une intersection valide existe dans la plage t_min et t_max
+    if (!distance) {
         return false;
     }
 
     rec.t = *distance;
-    rec.position = r.At(rec.t);
-    rec.normal = normal; // La normale du plan est constante
-    rec.set_face_normal(r, normal);
+    rec.position = position;
     rec.color = getColor();
-    rec.reflectivity = 34;
+    rec.reflectivity = m_reflectivity;
+    rec.normal = (normal * r.Direction() < 0) ? normal : -normal;
 
     return true;
 }

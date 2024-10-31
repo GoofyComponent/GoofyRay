@@ -35,7 +35,7 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
     if (!hasHit)
         return m_background;
 
-    Color ambientColor = closestHit.color * 0.1;
+    Color ambientColor = closestHit.color * 0.2; // composante ambiante
     Color diffuseColor(0, 0, 0);
     Color specularColor(0, 0, 0);
 
@@ -66,5 +66,4 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
 
     return phongColor;
 }
-
-void Scene::addLight(const Light &light) { m_lights.push_back(light);}
+void Scene::addLight(const Light &light) { m_lights.push_back(light); }
