@@ -45,11 +45,10 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
     rec.position = r.At(rec.t);
 
     // Calcul de la normale et ajustement pour qu'elle soit orientée dans la bonne direction
-    Vector3 outward_normal = (rec.position - origin) / radius;
-    rec.set_face_normal(r, outward_normal);
     rec.color = getColor();
     rec.reflectivity = m_reflectivity;
-
+    Vector3 outward_normal = (rec.position - origin) / radius;
+    rec.normal = outward_normal.normalized();
 
     return true;
 }

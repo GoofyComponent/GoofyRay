@@ -4,11 +4,9 @@
 Polygon::Polygon(const std::vector<Vector3> &iVertices, const Color &iColor, double reflectivity) :
     vertices(iVertices), Object(iColor, reflectivity) {}
 
-Polygon::~Polygon() {}
-
+Polygon::~Polygon() = default;
 
 const std::vector<Vector3> &Polygon::Vertices() const { return vertices; }
-
 
 Color Polygon::getColor() const { return color; }
 
@@ -65,7 +63,6 @@ std::optional<double> Polygon::intersects(const Ray &iRay) const {
 
     return closestDistance;
 }
-
 
 std::ostream &operator<<(std::ostream &_stream, const Polygon &polygon) {
     _stream << "Polygon with " << polygon.vertices.size() << " vertices:\n";
