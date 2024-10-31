@@ -104,12 +104,15 @@ void renderTemplateScene() {
     Color green(0, 1, 0);
     Color yellow(1, 1, 0);
 
-    Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green, 0.5);
+    Sphere sphereRight(Vector3(2.5, 2, -5), 1, green, 0.5);
     Sphere sphereMiddle(Vector3(0, 0, -8),2, blue, 0.5);
-    Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red , 0.5);
-    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0.5);
+    Sphere sphereLeft(Vector3(-2.5, 0, -10), 1, red , 0.5);
+    Plane plane(Vector3(0, 5, 0), Vector3(0, 1, 0), yellow, 0.5);
+
+    Triangle triangle(Vector3(0, 2, 0), Vector3(0, 2, 2), Vector3(2, 2, 2), red, 0.5);
 
     Light light(Vector3(0, 0, 0), Color(1, 1, 1), 0.80);
+    Light light2(Vector3(5, -5, 0), Color(0, 0, 1), 0.80);
 
     Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), imageWidth, imageHeight);
 
@@ -117,6 +120,8 @@ void renderTemplateScene() {
     Scene scene(camera, objects);
 
     scene.addLight(light);
+    scene.addLight(light2);
+    scene.addObject(&triangle);
     scene.setBackground(Color(0.03f, 0.0f, 0.08f));
 
     Image image(imageWidth, imageHeight, scene.getBackground());
