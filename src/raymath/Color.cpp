@@ -83,7 +83,6 @@ Color &Color::operator=(const Color &col) {
     return *this;
 }
 
-// Opérateurs de comparaison
 bool Color::operator==(const Color &other) const { return r == other.r && g == other.g && b == other.b; }
 
 bool Color::operator!=(const Color &other) const { return !(*this == other); }
@@ -92,4 +91,9 @@ bool Color::operator!=(const Color &other) const { return !(*this == other); }
 std::ostream &operator<<(std::ostream &os, const Color &color) {
     os << "Color(" << color.r << ", " << color.g << ", " << color.b << ")";
     return os;
+}
+
+std::istream& operator>>(std::istream& _stream, Color& col) {
+    _stream >> col.r >> col.g >> col.b;
+    return _stream;
 }
