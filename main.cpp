@@ -33,19 +33,20 @@ const std::vector<std::pair<Color, std::string>> presetColors = {
 };
 
 int main() {
-    int imageWidth = Input::getInt("Enter image width (or press Enter for 1024): ", 1024);
-    int imageHeight = Input::getInt("Enter image height (or press Enter for 1024): ", 1024);
 
     if (Input::promptTemplateChoice()) {
         renderTemplateScene();
         return 0;
     }
 
+    int imageWidth = Input::getInt("Enter image width (or press Enter for 1024): ", 1024);
+    int imageHeight = Input::getInt("Enter image height (or press Enter for 1024): ", 1024);
+
     // Choose color for the plane
     Color planeColor = chooseColor("plane");
 
     Vector3 cameraPosition(0, 0, 0);
-    Vector3 cameraDirection(0, 0, -1);
+    Vector3 cameraDirection(0, 0, 1);
     Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), planeColor, 0);
 
     Light light(Vector3(0, 40, 30), Color(1, 1, 1), 1);
@@ -104,9 +105,9 @@ void renderTemplateScene() {
     Color green(0, 1, 0);
     Color yellow(1, 1, 0);
 
-    Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green, 0.5);
-    Sphere sphereMiddle(Vector3(0, 0, -8),2, blue, 0.5);
-    Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red , 0.5);
+    Sphere sphereLeft(Vector3(-2, -3, -5), 1, green, 0.5);
+    Sphere sphereMiddle(Vector3(0, -1, -8),2, blue, 0.5);
+    Sphere sphereRight(Vector3(4, -4, -10), 1, red , 0.5);
     Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0.5);
 
     Light light(Vector3(0, 0, 0), Color(1, 1, 1), 0.80);
