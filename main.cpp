@@ -11,6 +11,9 @@
 #include "Sphere.hpp"
 #include "Input.hpp"
 
+// Function prototype to ensure renderTemplateScene is recognized
+void renderTemplateScene();
+
 int main() {
     int imageWidth = Input::getInt("Enter image width (or press Enter for 1024): ", 1024);
     int imageHeight = Input::getInt("Enter image height (or press Enter for 1024): ", 1024);
@@ -20,8 +23,14 @@ int main() {
         return 0;
     }
 
+    float pr, pg, pb;
+    Input::getColor("Enter Plane color RGB (0-1): ", pr, pg, pb);
+
     Vector3 cameraPosition(0, 0, 0);
     Vector3 cameraDirection(0, 0, 1);
+    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), Color(pr, pg, pb), 0);
+
+    Light light(Vector3(0, 40, 30), Color(1, 1, 1), 1);
     Camera camera(cameraPosition, cameraDirection, imageWidth, imageHeight);
 
     std::vector<Object *> objects;
@@ -48,6 +57,8 @@ int main() {
 
     float br, bg, bb;
     Input::getColor("Enter background color RGB (0-1): ", br, bg, bb);
+
+    scene.addLight(light);
     scene.setBackground(Color(br, bg, bb));
 
     Image image(imageWidth, imageHeight, scene.getBackground());
@@ -56,7 +67,7 @@ int main() {
     for (unsigned int y = 0; y < imageHeight; ++y) {
         for (unsigned int x = 0; x < imageWidth; ++x) {
             Ray ray = camera.generateRay(x, y);
-            Color pixelColor = scene.traceRay(ray);
+            Color pixelColor = scene.traceRay(ray, 2);
             image.SetPixel(x, y, pixelColor);
         }
     }
@@ -75,16 +86,21 @@ void renderTemplateScene() {
     Color red(1, 0, 0);
     Color blue(0, 0, 1);
     Color green(0, 1, 0);
+    Color yellow(1, 1, 0);
 
     Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green);
     Sphere sphereMiddle(Vector3(0, 0, -8), 1, blue);
     Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red);
+    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0);
+
+    Light light(Vector3(0, 40, 30), Color(1, 1, 1), 1);
 
     Camera camera(Vector3(0, 0, 0), Vector3(0, 0, -1), imageWidth, imageHeight);
 
     std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight};
     Scene scene(camera, objects);
 
+    scene.addLight(light);
     scene.setBackground(Color(0.03f, 0.0f, 0.08f));
 
     Image image(imageWidth, imageHeight, scene.getBackground());
@@ -94,7 +110,7 @@ void renderTemplateScene() {
     for (unsigned int y = 0; y < imageHeight; ++y) {
         for (unsigned int x = 0; x < imageWidth; ++x) {
             Ray ray = camera.generateRay(x, y);
-            Color pixelColor = scene.traceRay(ray,2);
+            Color pixelColor = scene.traceRay(ray ,2);
             image.SetPixel(x, y, pixelColor);
         }
     }
