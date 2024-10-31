@@ -45,8 +45,10 @@ public:
 
     // Affichage de la couleur
     friend std::ostream &operator<<(std::ostream &os, const Color &color);
+
     friend std::istream& operator>>(std::istream& _stream, Color& col);
 
+    friend std::ostream &operator<<(std::ostream &os, const Color &color);Color clamped();
 };
 
 // Opérateurs avec des scalaires pour permettre le scalar * color

@@ -14,6 +14,7 @@ target_include_directories(goofyray PUBLIC
                             "${PROJECT_SOURCE_DIR}/src/lodepng"
                             "${PROJECT_SOURCE_DIR}/src/core"
                             "${PROJECT_SOURCE_DIR}/src/object"
+                            "${PROJECT_SOURCE_DIR}/src/tinyobjloader"
                            )
 
 add_subdirectory(./src/raymath)
@@ -21,7 +22,9 @@ add_subdirectory(./src/rayimage)
 add_subdirectory(./src/lodepng)
 add_subdirectory(./src/core)
 add_subdirectory(./src/object)
+add_subdirectory(./src/tinyobjloader)
 
+target_link_libraries(goofyray PUBLIC tinyobjloader)
 target_link_libraries(goofyray PUBLIC raymath)
 target_link_libraries(goofyray PUBLIC rayimage)
 target_link_libraries(goofyray PUBLIC lodepng)

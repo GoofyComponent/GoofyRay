@@ -50,4 +50,3 @@ Vector3 Vector3::cross(const Vector3 &other) const {
 Vector3 operator*(double scalar, const Vector3& vec) {
     return Vector3(vec.x * scalar, vec.y * scalar, vec.z * scalar);
 }
-

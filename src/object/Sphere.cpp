@@ -37,7 +37,7 @@ std::optional<double> Sphere::intersects(const Ray &iRay) const {
 bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
     auto distance = intersects(r);
 
-    if (!distance) {
+    if (!distance|| *distance < t_min || *distance > t_max) {
         return false;
     }
 
@@ -48,7 +48,7 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
     rec.color = getColor();
     rec.reflectivity = m_reflectivity;
     Vector3 outward_normal = (rec.position - origin) / radius;
-    rec.normal = outward_normal.normalized();
+    rec.normal = r.Direction()*outward_normal < 0 ? outward_normal : -outward_normal;
 
     return true;
 }

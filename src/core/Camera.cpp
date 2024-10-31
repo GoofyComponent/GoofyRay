@@ -1,8 +1,7 @@
 #include "Camera.hpp"
 
-Camera::Camera(const Vector3& position, const Vector3& lookAt, int imageWidth, int imageHeight)
-    : m_position(position), m_imageWidth(imageWidth), m_imageHeight(imageHeight) {
-    
+Camera::Camera(const Vector3 &position, const Vector3 &lookAt, int imageWidth, int imageHeight) :
+    m_position(position), m_imageWidth(imageWidth), m_imageHeight(imageHeight) {
     m_direction = (lookAt - position).normalized();
 
     double aspectRatio = static_cast<double>(imageWidth) / imageHeight;
@@ -21,10 +20,6 @@ Ray Camera::generateRay(int x, int y) const {
     return Ray(m_position, direction);
 }
 
-const Vector3& Camera::getPosition() const {
-    return m_position;
-}
+const Vector3 &Camera::getPosition() const { return m_position; }
 
-const Vector3& Camera::getDirection() const {
-    return m_direction;
-}
+const Vector3 &Camera::getDirection() const { return m_direction; }

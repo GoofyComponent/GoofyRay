@@ -97,3 +97,7 @@ std::istream& operator>>(std::istream& _stream, Color& col) {
     _stream >> col.r >> col.g >> col.b;
     return _stream;
 }
+
+Color Color::clamped() {
+    return Color(std::clamp(r, 0.0f, 1.0f), std::clamp(g, 0.0f, 1.0f), std::clamp(b, 0.0f, 1.0f));
+}

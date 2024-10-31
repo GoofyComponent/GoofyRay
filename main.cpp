@@ -7,10 +7,12 @@
 #include "Camera.hpp"
 #include "Color.hpp"
 #include "Image.hpp"
+#include "ObjLoader.h"
 #include "Object.hpp"
 #include "Scene.hpp"
 #include "Sphere.hpp"
 #include "Input.hpp"
+#include "Triangle.h"
 
 // Function prototypes
 void renderTemplateScene();
@@ -102,16 +104,16 @@ void renderTemplateScene() {
     Color green(0, 1, 0);
     Color yellow(1, 1, 0);
 
-    Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green);
-    Sphere sphereMiddle(Vector3(0, 0, -8), 1, blue);
-    Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red);
-    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0);
+    Sphere sphereLeft(Vector3(2.5, 0, -5), 1, green, 0.5);
+    Sphere sphereMiddle(Vector3(0, 0, -8),2, blue, 0.5);
+    Sphere sphereRight(Vector3(-2.5, 0, -10), 1, red , 0.5);
+    Plane plane(Vector3(0, 1, 0), Vector3(0, 1, 0), yellow, 0.5);
 
-    Light light(Vector3(0, 40, 30), Color(1, 1, 1), 1);
+    Light light(Vector3(0, 0, 0), Color(1, 1, 1), 0.80);
 
-    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, -1), imageWidth, imageHeight);
+    Camera camera(Vector3(0, 0, 0), Vector3(0, 0, 1), imageWidth, imageHeight);
 
-    std::vector<Object *> objects = {&sphereLeft, &sphereMiddle, &sphereRight, &plane};
+    std::vector<Object *> objects = {&plane, &sphereLeft, &sphereMiddle, &sphereRight };
     Scene scene(camera, objects);
 
     scene.addLight(light);
@@ -177,9 +179,9 @@ Color chooseColor(const std::string &elementName) {
 
     std::cout << "Choose a color preset or enter a custom color for the " << elementName << ":\n";
     for (size_t i = 0; i < presetColors.size(); ++i) {
-        std::cout << i + 1 << ". " << presetColors[i].second 
-                  << " (" << presetColors[i].first.r << ", " 
-                  << presetColors[i].first.g << ", " 
+        std::cout << i + 1 << ". " << presetColors[i].second
+                  << " (" << presetColors[i].first.r << ", "
+                  << presetColors[i].first.g << ", "
                   << presetColors[i].first.b << ")\n";
     }
     std::cout << presetColors.size() + 1 << ". Custom color\n";

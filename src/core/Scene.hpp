@@ -23,6 +23,7 @@ public:
     Color traceRay(const Ray &ray, int depth);
     void addLight(const Light &light);
 
+    void addObject(Object *object);
 private:
     Camera m_camera;
     std::vector<Object *> m_objects;

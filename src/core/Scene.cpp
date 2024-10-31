@@ -26,7 +26,7 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
 
     for (const auto &object: m_objects) {
         hit_record tempHit;
-        if (object->hit(ray, 0.0001, 10000, tempHit)) {
+        if (object->hit(ray, 0.01, 100, tempHit)) {
             hasHit = true;
             closestHit = tempHit;
         }
@@ -35,7 +35,7 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
     if (!hasHit)
         return m_background;
 
-    Color ambientColor = closestHit.color * 0.2; // composante ambiante
+    Color ambientColor = closestHit.color * 0.5; // composante ambiante
     Color diffuseColor(0, 0, 0);
     Color specularColor(0, 0, 0);
 
@@ -47,7 +47,7 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
         diffuseColor += closestHit.color * light.color * (diffuseFactor * lightIntensity);
 
         Vector3 viewDir = (m_camera.getPosition() - closestHit.position).normalized();
-        Vector3 reflectDir = (lightDir - 2 * (closestHit.normal * lightDir) * closestHit.normal).normalized();
+        Vector3 reflectDir = (2 * (closestHit.normal * lightDir) * closestHit.normal - lightDir).normalized();
         double specularFactor =
                 std::pow(std::max(0.0, static_cast<double>(viewDir * reflectDir)), 10); // Shininess = 32
         specularColor += light.color * (specularFactor * lightIntensity);
@@ -64,6 +64,8 @@ Color Scene::traceRay(const Ray &ray, int depth = 5) {
         phongColor = phongColor * (1 - closestHit.reflectivity) + reflectedColor * closestHit.reflectivity;
     }
 
-    return phongColor;
+    return phongColor.clamped();
 }
 void Scene::addLight(const Light &light) { m_lights.push_back(light); }
+
+void Scene::addObject(Object *object) { m_objects.push_back(object); }
