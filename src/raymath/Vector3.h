@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
 #include <ostream>
+#include <iostream>
+#include <istream>
 
 class Vector3 {
 public:
@@ -28,3 +30,9 @@ Vector3 operator*(double scalar, const Vector3& vec);
 inline std::ostream &operator<<(std::ostream &out, const Vector3 &v) {
     return out << v.x << ' ' << v.y << ' ' << v.z;
 }
+
+inline std::istream &operator>>(std::istream &in, Vector3 &v) {
+    return in >> v.x >> v.y >> v.z;
+}
+
+
