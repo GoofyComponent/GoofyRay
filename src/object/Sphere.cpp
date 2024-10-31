@@ -1,53 +1,11 @@
 #include "Sphere.hpp"
+#include <cmath>
 
-/**
- * @brief Constructs a sphere with a specified center, radius, and color.
- * @param iOrigin Center of the sphere.
- * @param iRadius Radius of the sphere.
- * @param iColor Color of the sphere.
- */
-Sphere::Sphere(Vector3 iOrigin, float iRadius, const Color &iColor)
-    : origin(iOrigin), radius(iRadius), color(iColor) {}
+Sphere::Sphere(Vector3 center, double radius, Color color, double reflectivity) :
+    origin(center), radius(radius), Object(color, reflectivity) {}
 
-/**
- * @brief Destructor for the sphere.
- */
-Sphere::~Sphere() {}
-
-/**
- * @brief Gets the center of the sphere.
- * @return Center of the sphere.
- */
-Vector3 Sphere::Origin() const
-{
-    return origin;
-};
-
-/**
- * @brief Gets the radius of the sphere.
- * @return Radius of the sphere.
- */
-float Sphere::Radius() const
-{
-    return radius;
-}
-
-/**
- * @brief Gets the color of the sphere.
- * @return Color of the sphere.
- */
-Color Sphere::getColor() const
-{
-    return color;
-}
-
-/**
- * @brief Checks if a ray intersects with the sphere.
- * @param iRay The ray to check for intersection.
- * @return Returns the point of intersection if the ray intersects with the sphere, otherwise returns std::nullopt.
- */
-std::optional<Vector3> Sphere::intersects(const Ray &iRay) const
-{
+// Détecte l'intersection avec un rayon
+std::optional<double> Sphere::intersects(const Ray &iRay) const {
     Vector3 oc = origin - iRay.Origin();
 
     // Calculate the dot product which is just a float
@@ -64,58 +22,62 @@ std::optional<Vector3> Sphere::intersects(const Ray &iRay) const
     // calculate the length of a vector using pythagoras
     float distance = cp.length();
 
-    // No intersection if the distance from between P and C
-    // is greater than the radius of our sphere!
-    if (distance > radius)
-    {
+
+    if (distance > radius) {
         return std::nullopt;
     }
 
-    float a = std::sqrt(radius * radius - distance * distance);
+    float halfChord = std::sqrt(radius * radius - distance * distance);
+    double t = dotProd - halfChord; // Calcule la distance t depuis l'origine du rayon
 
-    Vector3 p1 = p + (a * -iRay.Direction());
-
-    return p1;
+    return t;
 }
 
-/**
- * @brief Sets the center of the sphere.
- * @param iOrigin New center of the sphere.
- */
-void Sphere::setOrigin(Vector3 iOrigin)
-{
-    origin = iOrigin;
+
+bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
+    auto distance = intersects(r);
+
+    if (!distance) {
+        return false;
+    }
+
+    rec.t = *distance;
+    rec.position = r.At(rec.t);
+
+    // Calcul de la normale et ajustement pour qu'elle soit orientée dans la bonne direction
+    Vector3 outward_normal = (rec.position - origin) / radius;
+    rec.set_face_normal(r, outward_normal);
+    rec.color = getColor();
+    rec.reflectivity = m_reflectivity;
+
+
+    return true;
 }
 
-/**
- * @brief Sets the radius of the sphere.
- * @param iRadius New radius of the sphere.
- */
-void Sphere::setRadius(float iRadius)
-{
-    radius = iRadius;
-}
+Sphere::~Sphere() = default;
 
-/**
- * @brief Sets the color of the sphere.
- * @param iColor New color of the sphere.
- */
-void Sphere::setColor(const Color &iColor)
-{
-    color = iColor;
-}
-
-/**
- * @brief Overloaded stream insertion operator to output the sphere's properties.
- * @param _stream The output stream.
- * @param sphere The sphere to output.
- * @return The output stream.
- */
-std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere)
-{
+std::ostream &operator<<(std::ostream &_stream, const Sphere &sphere) {
     _stream << "Sphere: " << std::endl;
     _stream << "Center: " << sphere.Origin() << std::endl;
     _stream << "Radius: " << sphere.Radius() << std::endl;
     _stream << "Color: " << sphere.getColor() << std::endl;
     return _stream;
 }
+
+
+// Renvoie la couleur de la sphère
+Color Sphere::getColor() const { return m_color; }
+
+void Sphere::setColor(const Color &iColor) { m_color = iColor; }
+
+void Sphere::setRadius(float iRadius) { radius = iRadius; }
+
+void Sphere::setOrigin(Vector3 iOrigin) { origin = iOrigin; }
+
+float Sphere::Radius() const { return radius; }
+
+Vector3 Sphere::Origin() const { return origin; }
+
+void Sphere::setReflectivity(double iReflectivity) { m_reflectivity = iReflectivity; }
+
+double Sphere::getReflectivity() { return m_reflectivity; }

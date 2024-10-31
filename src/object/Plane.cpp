@@ -1,80 +1,53 @@
 #include "Plane.hpp"
 
-/**
- * @brief Constructs a plane with a specified normal vector and distance from the origin.
- * @param normal Normal vector of the plane.
- * @param distance Distance from the origin.
- */
-Plane::Plane(const Vector3 &normal, float distance)
-{
-    this->normal.normalized();
-}
 
-/**
- * @brief Constructs a plane from a point on the plane and the normal vector.
- * @param point A point on the plane.
- * @param normal Normal vector of the plane.
- */
-Plane::Plane(const Vector3 &point, const Vector3 &normal)
-{
-    this->normal.normalized();
-    d = -this->normal * point;
-}
+Plane::Plane(const Vector3 &normal, float distance, const Color &iColor, double iReflection) :
+    normal(normal.normalized()), d(distance), Object(iColor, iReflection) {}
 
-/**
- * @brief Gets the normal vector of the plane.
- * @return Vector3 The normal vector of the plane.
- */
-Vector3 Plane::Normal() const
-{
-    return normal;
-}
+Vector3 Plane::Normal() const { return normal; }
 
-/**
- * @brief Gets the distance from the origin of the plane.
- * @return float The distance from the origin of the plane.
- */
-float Plane::Distance() const
-{
-    return d;
-}
 
-/**
- * @brief Checks if a ray intersects with the plane.
- * @param ray The ray to check for intersection.
- * @return Intersection point if it exists, otherwise std::nullopt.
- */
-std::optional<Vector3> Plane::intersects(const Ray &ray) const
-{
+float Plane::Distance() const { return d; }
+
+
+std::optional<double> Plane::intersects(const Ray &ray) const {
     float denom = normal * ray.Direction();
-    if (denom > -1e-6)
-    {
+
+    if (std::abs(denom) < 1e-6) {
         return std::nullopt;
     }
 
-    float t = -(normal * ray.Origin()) + d / denom;
+    float t = -(normal * ray.Origin() + d) / denom;
 
-    Vector3 diff = normal - ray.Origin();
-    float num = diff * normal;
+    if (t < 0) {
+        return std::nullopt;
+    }
 
-    float t2 = num / denom;
-
-    Vector3 p = ray.Origin() + ray.Direction() * t2;
-
-    return p;
+    return t;
 }
 
-/**
- * @brief Overriding the output stream operator for Plane.
- *
- * This function outputs the plane's vertices and color to an output stream.
- *
- * @param _stream The output stream.
- * @param plane The Plane object to output.
- * @return std::ostream& A reference to the output stream.
- */
-std::ostream &operator<<(std::ostream &_stream, const Plane &plane)
-{
-    _stream << "Plane with normal: " << plane.normal << " and distance: " << plane.d;
-    return _stream;
+
+bool Plane::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
+    auto distance = intersects(r);
+
+    if (!distance || *distance < t_min || *distance > t_max) {
+        return false;
+    }
+
+    rec.t = *distance;
+    rec.position = r.At(rec.t);
+    rec.normal = normal; // La normale du plan est constante
+    rec.set_face_normal(r, normal);
+    rec.color = getColor();
+    rec.reflectivity = 34;
+
+    return true;
 }
+
+Color Plane::getColor() const { return m_color; }
+
+void Plane::setColor(const Color &iColor) { m_color = iColor; }
+
+void Plane::setReflectivity(double iReflectivity) { m_reflectivity = iReflectivity; }
+
+double Plane::getReflectivity() { return m_reflectivity; }

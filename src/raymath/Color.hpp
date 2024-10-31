@@ -1,86 +1,53 @@
 #pragma once
-
+#include <algorithm>
 #include <iostream>
 
-/** 
- * @class Color
- * @brief Initialize a color with 3 components : Red, Green and Blue
-**/
-class  Color
-{
-private:
-  float r = 0;
-  float b = 0;
-  float g = 0;
+class Color {
 public:
-  /**
-   * @brief Create a black color
-   */
-  Color();
-  /**
-   * @brief Create a color with the given components
-   * @param iR : red component
-   * @param iG : green component
-   * @param iB : blue component
-   */
-  Color(float r, float g, float b);
-  /** 
-   * @brief Destructor of the color
-   * @details Used to free the memory allocated for the color
-   */
-  ~ Color();
+    float r, g, b;
 
-  float R();
-  float G();
-  float B();
+    // Constructeurs
+    Color();
+    Color(float iR, float iG, float iB);
+    ~Color();
 
-  /**
-   * @brief Overloads the + operator to add two colors.
-   * 
-   * This function adds two colors by summing their respective components.
-   * 
-   * @param other The color to add.
-   * @return The resulting color from adding the two colors.
-   * 
-   * Example:
-   * @code
-   * Color c1(100, 150, 200);
-   * Color c2(50, 50, 50);
-   * Color result = c1 + c2; // result will have the values (150, 200, 250)
-   * @endcode
-   */
-  Color operator+(Color const& col);
+    // Méthodes d'accès
+    float R() const;
+    float G() const;
+    float B() const;
 
-  /**
-   * @brief Overloads the = operator to assign a color to another.
-   * 
-   * This function assigns the components of a color to another color.
-   * 
-   * @param col The color to assign.
-   * @return Color& A reference to the assigned color.
-   * 
-   * Example:
-   * @code
-   * Color c1(100, 150, 200);
-   * Color c2;
-   * c2 = c1; // c2 will have the values (100, 150, 200)
-   * @endcode
-   */
-  Color& operator=(Color const& col);
+    // Opérateurs arithmétiques de base
+    Color operator+(const Color &other) const;
+    Color operator-(const Color &other) const;
+    Color operator*(const Color &other) const;
+    Color operator/(const Color &other) const;
 
+    // Opérateurs avec des scalaires
+    Color operator*(float scalar) const;
+    Color operator/(float scalar) const;
 
-  Color operator*(double scalar) const;  // Nouvelle surcharge
+    // Opérateurs d'affectation avec des couleurs
+    Color &operator+=(const Color &other);
+    Color &operator-=(const Color &other);
+    Color &operator*=(const Color &other);
+    Color &operator/=(const Color &other);
 
+    // Opérateurs d'affectation avec des scalaires
+    Color &operator*=(float scalar);
+    Color &operator/=(float scalar);
 
-  /**
-   * @brief Overriding the output stream operator.
-   * 
-   * This function outputs the color components (r, g, b) of a Color object
-   * to an output stream.
-   * 
-   * @param _stream The output stream.
-   * @param col The Color object to output.
-   * @return std::ostream& A reference to the output stream.
-   */
-  friend std::ostream & operator<<(std::ostream & _stream, Color const & col);
+    // Opérateur d'affectation
+    Color &operator=(const Color &col);
+
+    // Opérateurs de comparaison
+    bool operator==(const Color &other) const;
+    bool operator!=(const Color &other) const;
+
+    // Affichage de la couleur
+    friend std::ostream &operator<<(std::ostream &os, const Color &color);
 };
+
+// Opérateurs avec des scalaires pour permettre le scalar * color
+inline Color operator*(float scalar, const Color &color) {
+    return Color(color.r * scalar, color.g * scalar, color.b * scalar);
+}
